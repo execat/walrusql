@@ -1,6 +1,9 @@
 package db.walrusql.models;
 
+import db.walrusql.Constant;
 import db.walrusql.DataHandler;
+
+import java.util.ArrayList;
 
 /**
  * Created by atm on 4/10/16.
@@ -22,7 +25,10 @@ public class Table {
      */
     public boolean show() {
         if (schemaExists()) {
-            DataHandler show = new DataHandler()
+            /*
+            DataHandler handler = new DataHandler(Constant.schemataTableName, "r");
+            ArrayList<String> response = handler.showSchemas();
+            */
             return true;
         }
         return false;
