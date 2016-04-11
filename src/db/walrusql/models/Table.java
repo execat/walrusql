@@ -56,11 +56,20 @@ public class Table {
             }
 
             // TODO: Fetch data depending on `types` array
+            System.out.println(columns);
             System.out.println(types);
 
             return true;
         }
         return false;
+    }
+
+    /*
+        SELECT * FROM <TABLE> (No conditions)
+     */
+    public boolean select(String columnName, String operand, String value) {
+        return false;
+
     }
 
     /*

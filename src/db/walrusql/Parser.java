@@ -61,6 +61,9 @@ public class Parser {
                 String[] tokens = input.split(" ");
                 // Expected value: tokens = ["use", "<SCHEMA NAME>"]
                 response = service.useSchema(tokens[1]);
+                if (response) {
+                    prompt = "Walrusql $" + tokens[1] + " > ";
+                }
             }
 
             // CREATE SCHEMA <SCHEMA NAME>
@@ -81,8 +84,14 @@ public class Parser {
             // SELECT * FROM <TABLE NAME>
             else if (input.matches("select \\* from .*")) {
                 String[] tokens = input.split(" ");
-                // Expected value: tokens = ["select", "*", "from", "<SCHEMA NAME>"]
-                response = service.select(tokens[3]);
+                if(tokens.length == 4) {
+                    // Expected value: tokens = ["select", "*", "from", "<SCHEMA NAME>"]
+                    response = service.select(tokens[3]);
+                } else if (tokens.length == 8){
+                    // Expected value: tokens = ["select", "*", "from"' "<SCHEMA NAME>",
+                    // "where", "<COL_NAME>", "<OPERAND>", "<VALUE>"
+                    response = service.select(tokens[3], tokens[5], tokens[6], tokens[7]);
+                }
             }
 
             // CREATE TABLE <TABLE NAME> (<PROPERTIES>)
@@ -91,7 +100,7 @@ public class Parser {
                 // Expected value:
                 // ["create", "table", "<TABLE NAME>", "(col_1", "type_1(size)", ...]
                 int start = input.indexOf('(') + 1;
-                int end = input.length() - 1;
+                int end = input.length() - 1;           // Assuming last two letters are ");"
                 // To reduce confusion between "long int" and "short int", combine
                 // into a single word
                 String params = input.substring(start, end)

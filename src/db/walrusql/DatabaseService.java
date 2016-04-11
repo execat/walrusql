@@ -51,6 +51,12 @@ public class DatabaseService {
         return table.select();
     }
 
+    public boolean select(String tableName, String columnName,
+                          String operand, String value) {
+        table.setTable(tableName);
+        return table.select(columnName, operand, value);
+    }
+
     // Create table
     public boolean createTable(String tableName, String[] datatypes) {
         table.setTable(tableName);
