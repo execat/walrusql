@@ -6,34 +6,63 @@ import db.walrusql.DataHandler;
  * Created by atm on 4/10/16.
  */
 public class Schema {
-    private String current = null;
+    private String schema = null;
 
+    /*
+        SHOW SCHEMAS;
+     */
     public boolean show() {
         Table t = new Table("information_schema", "schemata");
+        t.show();
         return true;
     }
 
-    public boolean use(String name) {
-        if (exists(name)) {
-            System.out.println("Using " + name);
-            current = name;
+    /*
+        USE SCHEMA <SCHEMA NAME>;
+     */
+    public boolean use(String schemaName) {
+        schema = schemaName;
+        if (schemaExists()) {
+            System.out.println("Using " + schema);
             return true;
         } else {
-            System.out.println("FAIL: Cannot 'use' " + name + ". " +
+            schema = null;
+            System.out.println("FAIL: Cannot 'use' " + schema + ". " +
                     "Schema with that name does not exist");
             return false;
         }
     }
 
-    public boolean create() {
+    /*
+        CREATE SCHEMA <SCHEMA NAME>;
+     */
+    public boolean create(String schemaName) {
+        schema = schemaName;
+        // Create only if schema does NOT exist
+        // || condition for now
+        if (!schemaExists() || true) {
+            // Insert into information schema
+            return true;
+        } else {
+            schema = null;
+            System.out.println("FAIL: Schema already exists");
+            return false;
+        }
+    }
+
+    private boolean exists(String schemaName) {
         return true;
     }
 
-    private boolean exists(String name) {
+    // schema should be a valid schema
+    private boolean schemaExists() {
+        if (!true) {
+            System.out.println("FAIL: Invalid schema in schema name");
+            return false;
+        }
         return true;
     }
-
     public String getCurrent() {
-        return current;
+        return schema;
     }
 }

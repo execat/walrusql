@@ -5,21 +5,21 @@ package db.walrusql.models;
  */
 public class Table {
     private String schema = null;
-    private String current = null;  // Current table
+    private String table = null;  // Current table
 
     public Table() {
     }
 
     public Table(String schemaName, String tableName) {
         schema = schemaName;
-        current = tableName;
+        table = tableName;
     }
 
     /*
         SHOW TABLES
      */
     public boolean show() {
-        if (databaseExists()) {
+        if (schemaExists()) {
             // Code to show all the tables
             return true;
         }
@@ -29,8 +29,8 @@ public class Table {
     /*
         SELECT * FROM <TABLE> (No conditions)
      */
-    public boolean select(String table) {
-        current = table;
+    public boolean select(String tableName) {
+        table = tableName;
         if (sanity()) {
             // SELECT * FROM <TABLE>
             return true;
@@ -46,9 +46,9 @@ public class Table {
             column_name_n data_type(size) [primary_key|not null],
         );
      */
-    public boolean create(String table, String[] datatypes) {
-        current = table;
-        if (databaseExists()) {
+    public boolean create(String tableName, String[] datatypes) {
+        table = tableName;
+        if (schemaExists()) {
             // Create table
             return true;
         }
@@ -58,8 +58,8 @@ public class Table {
     /*
         INSERT INTO TABLE <TABLE> VALUES (value_1, value_2, ..., value_n);
      */
-    public boolean insert(String table, String[] values) {
-        current = table;
+    public boolean insert(String tableName, String[] values) {
+        table = tableName;
         if (sanity()) {
             // Try inserting
             return true;
@@ -68,10 +68,10 @@ public class Table {
     }
 
     /*
-
+        DO YOU HAVE TO SUPPORT DROP OR NOT?
      */
-    public boolean drop(String table) {
-        current = table;
+    public boolean drop(String tableName) {
+        table = tableName;
         if (sanity()) {
             // Try dropping
             return true;
@@ -80,7 +80,7 @@ public class Table {
     }
 
     private boolean sanity() {
-        return databaseExists() && tableExists();
+        return schemaExists() && tableExists();
     }
 
     private boolean tableExists() {
@@ -92,7 +92,7 @@ public class Table {
         return true;
     }
 
-    private boolean databaseExists() {
+    private boolean schemaExists() {
         if (schema == null) {
             System.out.println("FAIL: No database selected");
             return false;
