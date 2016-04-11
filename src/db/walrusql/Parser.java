@@ -7,15 +7,15 @@ import java.util.Scanner;
  */
 public class Parser {
     static String prompt;
-    Scanner input;
-    String currentSchema, inputString;
+    Scanner scanner;
+    String currentSchema, input;
     DatabaseService service;
 
     public Parser() {
         prompt = "Walrusql > ";
-        input = new Scanner(System.in).useDelimiter(";");
+        scanner = new Scanner(System.in).useDelimiter(";");
         currentSchema = "information_schema";
-        inputString = "";
+        input = "";
         service = new DatabaseService();
     }
 
@@ -40,27 +40,27 @@ public class Parser {
     public void parse() {
         do {
             System.out.print(prompt);
-            inputString = input.nextLine().trim()
+            input = scanner.nextLine().trim()
                     .replace(" +", " ")
                     .replace(";", "").toLowerCase();
             boolean response = true;
-            System.out.println("INPUT IS: " + inputString);
+            System.out.println("INPUT IS: " + input);
 
             /*
                 Schema commands
              */
             // SHOW SCHEMAS;
-            if (inputString.matches("show schemas")) {
+            if (input.matches("show schemas")) {
                 response = service.showSchemas();
             }
 
             // USE <SCHEMA NAME>
-            else if (inputString.matches("use .*")) {
+            else if (input.matches("use .*")) {
                 response = service.useSchema();
             }
 
             // CREATE SCHEMA <SCHEMA NAME>
-            else if (inputString.matches("create schema .*")) {
+            else if (input.matches("create schema .*")) {
                 response = service.createSchema();
             }
 
@@ -68,40 +68,40 @@ public class Parser {
                 Tables
              */
             // SHOW TABLES;
-            else if (inputString.matches("show tables")) {
+            else if (input.matches("show tables")) {
                 response = service.showTables();
             }
 
             // SELECT * FROM <TABLE NAME>
-            else if (inputString.matches("select \\* from .*")) {
+            else if (input.matches("select \\* from .*")) {
                 response = service.select();
             }
 
             // CREATE TABLE <TABLE NAME> (<PROPERTIES>)
-            else if (inputString.matches("create table .*")) {
+            else if (input.matches("create table .*")) {
                 response = service.createTable();
             }
 
 
             // INSERT INTO <TABLE NAME> VALUES (<VALUES>)
-            else if (inputString.matches("insert into .*")) {
+            else if (input.matches("insert into .*")) {
                 response = service.insert();
             }
 
             // DROP TABLE
-            else if (inputString.matches("drop table")) {
+            else if (input.matches("drop table")) {
                 response = service.dropTable();
             }
 
             /*
             // CREATE SCHEMA <SCHEMA NAME>
-            else if (inputString.matches("")) {
+            else if (input.matches("")) {
                 response = service.exec();
             }
             */
 
             // EXIT
-            else if (inputString.matches("exit")) {
+            else if (input.matches("exit")) {
                 return;
             }
 
