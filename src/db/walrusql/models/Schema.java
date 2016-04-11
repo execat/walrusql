@@ -32,4 +32,8 @@ public class Schema {
     private boolean exists(String name) {
         return true;
     }
+
+    public String getCurrent() {
+        return current;
+    }
 }

@@ -23,15 +23,15 @@ public class DatabaseService {
     }
 
     public boolean useSchema(String name) {
-        return schema.use(name);
+        return schema.use(name) && table.setSchema(name);
     }
 
     public boolean createSchema() {
         return schema.create();
     }
 
-    public boolean showTables() {
-        return table.show();
+    public boolean showTables(String tableName) {
+        return table.show(schema.getCurrent(), tableName);
     }
 
     public boolean select() {
