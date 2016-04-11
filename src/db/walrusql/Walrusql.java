@@ -1,11 +1,11 @@
 package db.walrusql;
 
-import db.walrusql.models.InformationSchemaCreator;
+import db.walrusql.models.InformationSchema;
 
 public class Walrusql {
     // Checks for presence of information schema
     private static boolean checkInformationSchema() {
-        InformationSchemaCreator i = new InformationSchemaCreator();
+        InformationSchema i = new InformationSchema();
         return i.create();
     }
 

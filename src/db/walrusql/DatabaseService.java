@@ -1,5 +1,6 @@
 package db.walrusql;
 
+import db.walrusql.models.InformationSchema;
 import db.walrusql.models.Schema;
 import db.walrusql.models.Table;
 
@@ -9,18 +10,20 @@ import db.walrusql.models.Table;
 public class DatabaseService {
     Schema schema;
     Table table;
+    String input;
 
-    public DatabaseService() {
+    public DatabaseService(String str) {
         schema = new Schema();
         table = new Table();
+        input = str;
     }
 
     public boolean showSchemas() {
         return schema.show();
     }
 
-    public boolean useSchema() {
-        return schema.use();
+    public boolean useSchema(String name) {
+        return schema.use(name);
     }
 
     public boolean createSchema() {

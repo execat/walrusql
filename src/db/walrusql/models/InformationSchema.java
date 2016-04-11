@@ -9,13 +9,13 @@ import java.io.RandomAccessFile;
 /**
  * Created by atm on 4/10/16.
  */
-public class InformationSchemaCreator {
-    String schemataTableName;
-    String tablesTableName;
-    String columnsTableName;
-    String directory;
+public class InformationSchema {
+    static String schemataTableName;
+    static String tablesTableName;
+    static String columnsTableName;
+    static String directory;
 
-    public InformationSchemaCreator() {
+    public InformationSchema() {
         directory  = "data/";
         schemataTableName = directory + "information_schema.schemata.tbl";
         tablesTableName = directory + "information_schema.tables.tbl";

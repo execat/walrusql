@@ -1,6 +1,7 @@
 package db.walrusql;
 
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 /**
  * Created by atm on 4/10/16.
@@ -51,17 +52,20 @@ public class Parser {
              */
             // SHOW SCHEMAS;
             if (input.matches("show schemas")) {
+                // Needs no parameters
                 response = service.showSchemas();
             }
 
             // USE <SCHEMA NAME>
             else if (input.matches("use .*")) {
-                response = service.useSchema();
+                String[] tokens = input.split(" ");
+                // Expected value: tokens = ["use", "<SCHEMA NAME>"]
+                response = service.useSchema(tokens[1]);
             }
 
             // CREATE SCHEMA <SCHEMA NAME>
             else if (input.matches("create schema .*")) {
-                response = service.createSchema();
+                response = service.createSchema(input);
             }
 
             /*
@@ -69,28 +73,28 @@ public class Parser {
              */
             // SHOW TABLES;
             else if (input.matches("show tables")) {
-                response = service.showTables();
+                response = service.showTables(input);
             }
 
             // SELECT * FROM <TABLE NAME>
             else if (input.matches("select \\* from .*")) {
-                response = service.select();
+                response = service.select(input);
             }
 
             // CREATE TABLE <TABLE NAME> (<PROPERTIES>)
             else if (input.matches("create table .*")) {
-                response = service.createTable();
+                response = service.createTable(input);
             }
 
 
             // INSERT INTO <TABLE NAME> VALUES (<VALUES>)
             else if (input.matches("insert into .*")) {
-                response = service.insert();
+                response = service.insert(input);
             }
 
             // DROP TABLE
             else if (input.matches("drop table")) {
-                response = service.dropTable();
+                response = service.dropTable(input);
             }
 
             /*
