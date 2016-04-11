@@ -43,7 +43,21 @@ public class Table {
      */
     public boolean select() {
         if (sanity()) {
-            // SELECT * FROM <TABLE>
+            DataHandler handler = new DataHandler(Constant.columnsTableName, "r");
+            ArrayList<ArrayList> columnsTable = handler.fetchColumns();
+            // Stores the column structure of the table
+            ArrayList<ArrayList> columns = new ArrayList();
+            ArrayList<String> types = new ArrayList();
+            for (ArrayList c: columnsTable) {
+                if(c.get(1).toString().toLowerCase().equals(table)) {
+                    columns.add(c);
+                    types.add((String)c.get(4));
+                }
+            }
+
+            // TODO: Fetch data depending on `types` array
+            System.out.println(types);
+
             return true;
         }
         return false;
@@ -57,9 +71,21 @@ public class Table {
             column_name_n data_type(size) [primary_key|not null],
         );
      */
-    public boolean create(String[] datatypes) {
+    public boolean create(String[] cols) {
         if (schemaExists()) {
-            // Create table
+            if (silentTableExists()) {
+                System.out.println("Table with this name already exists");
+                return false;
+            }
+
+            DataHandler tableHandler = new DataHandler(Constant.tablesTableName, "rw");
+            DataHandler columnHandler = new DataHandler(Constant.columnsTableName, "rw");
+
+            System.out.println(schema);
+            System.out.println(table);
+            tableHandler.insertIntoTables(schema, table, cols.length);
+            columnHandler.insertIntoColumns(schema, table, cols);
+
             return true;
         }
         return false;
@@ -95,12 +121,24 @@ public class Table {
     }
 
     private boolean tableExists() {
-        // Write a better condition here
-        if (!true) {
+        boolean response = silentTableExists();
+        if (!response) {
             System.out.println("FAIL: Table does not exist");
-            return false;
         }
-        return true;
+        return response;
+    }
+
+    private boolean silentTableExists() {
+        boolean exists = false;
+        DataHandler handler = new DataHandler(Constant.tablesTableName, "r");
+        ArrayList<ArrayList> response = handler.fetchTables();
+        for(ArrayList arr: response) {
+            if (table.equals(arr.get(1).toString().toLowerCase()) &&
+                    schema.equals(arr.get(0).toString().toLowerCase())) {
+                exists = true;
+            }
+        }
+        return exists;
     }
 
     private boolean schemaExists() {

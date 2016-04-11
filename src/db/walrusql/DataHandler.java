@@ -110,4 +110,83 @@ public class DataHandler {
         }
         return output;
     }
+
+    public ArrayList<ArrayList> fetchColumns() {
+        ArrayList<ArrayList> output = new ArrayList();
+        try {
+            do {
+                ArrayList sublist = new ArrayList();
+
+                sublist.add(new String(readVarchar()));
+                sublist.add(new String(readVarchar()));
+                sublist.add(new String(readVarchar()));
+                sublist.add(file.readInt());
+                sublist.add(new String(readVarchar()));
+                sublist.add(new String(readVarchar()));
+                sublist.add(new String(readVarchar()));
+
+                output.add(sublist);
+            } while(true);
+        } catch (IOException e) {
+        }
+        return output;
+    }
+
+    public boolean insertIntoTables(String schema, String table, int rows) {
+        end();
+        writeVarchar(schema);
+        writeVarchar(table);
+        writeLong(rows);
+        return true;
+    }
+
+
+    public boolean insertIntoColumns(String schema, String table, String[] cols) {
+        /*
+            Assume cols are in this format:
+            col_name_1 data_type(size) not_null primary_key
+         */
+        end();
+        int position = 1;
+        for(String col: cols) {
+            String[] tokens = col.split(" ");
+            // Schema name
+            writeVarchar(schema);
+            // Table name
+            writeVarchar(table);
+            // Column name
+            writeVarchar(tokens[0]);
+            // Position
+            writeInt(position);
+            // Column type
+            writeVarchar(tokens[1]);
+
+            // Nullable?
+            boolean nullWritten = false;
+            for (int i = 2; i < tokens.length; i++) {
+                if ((tokens[i] == "nnull" || tokens[i] == "pri") && !nullWritten) {
+                    writeVarchar("NO");
+                    nullWritten = true;
+                }
+            }
+            if(!nullWritten) {
+                writeVarchar("YES");
+            }
+
+            // PK?
+            boolean pkWritten = false;
+            for (int i = 2; i < tokens.length; i++) {
+                if (tokens[i] == "pri" && !pkWritten) {
+                    writeVarchar("PRI");
+                    pkWritten = true;
+                }
+            }
+            if(!pkWritten) {
+                writeVarchar("");
+            }
+
+            position++;
+        }
+        return true;
+    }
 }

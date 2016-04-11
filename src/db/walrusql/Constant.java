@@ -1,5 +1,7 @@
 package db.walrusql;
 
+import java.util.ArrayList;
+
 /**
  * Created by atm on 4/11/16.
  */

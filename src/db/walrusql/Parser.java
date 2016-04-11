@@ -90,8 +90,17 @@ public class Parser {
                 String[] tokens = input.split(" ");
                 // Expected value:
                 // ["create", "table", "<TABLE NAME>", "(col_1", "type_1(size)", ...]
-                // CORRECT THIS
-                response = service.createTable(tokens[2], tokens);
+                int start = input.indexOf('(') + 1;
+                int end = input.length() - 1;
+                // To reduce confusion between "long int" and "short int", combine
+                // into a single word
+                String params = input.substring(start, end)
+                        .replaceAll("short int", "short")
+                        .replaceAll("long int", "long")
+                        .replaceAll("primary key", "pri")
+                        .replaceAll("not null", "nnull")
+                        .replaceAll(", ", ",");
+                response = service.createTable(tokens[2], params.split(","));
             }
 
 
