@@ -3,6 +3,7 @@ package db.walrusql.models;
 import db.walrusql.Constant;
 import db.walrusql.DataHandler;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -25,10 +26,13 @@ public class Table {
      */
     public boolean show() {
         if (schemaExists()) {
-            /*
-            DataHandler handler = new DataHandler(Constant.schemataTableName, "r");
-            ArrayList<String> response = handler.showSchemas();
-            */
+            DataHandler handler = new DataHandler(Constant.tablesTableName, "r");
+            ArrayList<ArrayList> response = handler.fetchTables();
+            for(ArrayList arr: response) {
+                if (schema.equals(arr.get(0))) {
+                    System.out.println(arr.get(1));
+                }
+            }
             return true;
         }
         return false;

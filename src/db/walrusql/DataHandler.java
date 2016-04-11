@@ -75,14 +75,39 @@ public class DataHandler {
         ArrayList output = new ArrayList();
         try {
             do {
-                int length = file.readByte();
-                byte[] bytes = new byte[length];
-                file.read(bytes);
-                output.add(new String(bytes));
+                output.add(new String(readVarchar()));
             } while(true);
         } catch (IOException e) {
         }
         return output;
     }
 
+    private String readVarchar() throws IOException {
+        int length = 0;
+        byte[] bytes;
+        length = file.readByte();
+        bytes = new byte[length];
+        file.read(bytes);
+        return new String(bytes);
+    }
+
+    public ArrayList fetchTables() {
+        ArrayList<ArrayList> output = new ArrayList();
+        try {
+            do {
+                ArrayList sublist = new ArrayList();
+
+                // Table schema
+                sublist.add(new String(readVarchar()));
+                // Table name
+                sublist.add(new String(readVarchar()));
+                // Table rows
+                sublist.add(file.readLong());
+
+                output.add(sublist);
+            } while(true);
+        } catch (IOException e) {
+        }
+        return output;
+    }
 }
