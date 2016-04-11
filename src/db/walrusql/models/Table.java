@@ -1,5 +1,7 @@
 package db.walrusql.models;
 
+import db.walrusql.DataHandler;
+
 /**
  * Created by atm on 4/10/16.
  */
@@ -20,7 +22,7 @@ public class Table {
      */
     public boolean show() {
         if (schemaExists()) {
-            // Code to show all the tables
+            DataHandler show = new DataHandler()
             return true;
         }
         return false;

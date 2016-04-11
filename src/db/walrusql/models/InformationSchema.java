@@ -1,5 +1,6 @@
 package db.walrusql.models;
 
+import db.walrusql.Constant;
 import db.walrusql.DataHandler;
 
 import java.io.File;
@@ -16,29 +17,10 @@ public class InformationSchema {
     static String directory;
 
     public InformationSchema() {
-        directory  = "data/";
-        schemataTableName = directory + "information_schema.schemata.tbl";
-        tablesTableName = directory + "information_schema.tables.tbl";
-        columnsTableName = directory + "information_schema.columns.tbl";
-    }
-
-    public static void main(String args[]) {
-        String directory  = "data/";
-        String file = "ab.txt";
-
-        try {
-            File dir = new File(directory);
-            dir.mkdirs();
-            if (new File(directory + file).exists()) {
-                System.out.println("Exists");
-                return;
-            }
-            RandomAccessFile schemataTableFile = new RandomAccessFile(directory + file, "rw");
-            schemataTableFile.write(1000);
-            System.out.println("Created");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        directory  = Constant.directory;
+        schemataTableName = Constant.schemataTableName;
+        tablesTableName = Constant.tablesTableName;
+        columnsTableName = Constant.columnsTableName;
     }
 
     public boolean create() {
