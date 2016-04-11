@@ -49,4 +49,12 @@ public class DataHandler {
         }
         return true;
     }
+
+    public long tableLength(String schema, String table) {
+        
+    }
+
+    public void printTable(String schema, String table) {
+
+    }
 }

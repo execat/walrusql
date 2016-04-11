@@ -44,7 +44,7 @@ public class Parser {
             input = scanner.nextLine().trim()
                     .replace(" +", " ")
                     .replace(";", "").toLowerCase();
-            boolean response = true;
+            boolean response = false;
             System.out.println("INPUT IS: " + input);
 
             /*
@@ -65,7 +65,9 @@ public class Parser {
 
             // CREATE SCHEMA <SCHEMA NAME>
             else if (input.matches("create schema .*")) {
-                response = service.createSchema(input);
+                String[] tokens = input.split(" ");
+                // Expected value: tokens = ["create", "schema", "<SCHEMA NAME>"]
+                response = service.createSchema(tokens[2]);
             }
 
             /*
@@ -73,26 +75,37 @@ public class Parser {
              */
             // SHOW TABLES;
             else if (input.matches("show tables")) {
-                response = service.showTables(input);
+                response = service.showTables();
             }
 
             // SELECT * FROM <TABLE NAME>
             else if (input.matches("select \\* from .*")) {
-                response = service.select(input);
+                String[] tokens = input.split(" ");
+                // Expected value: tokens = ["select", "*", "from", "<SCHEMA NAME>"]
+                response = service.select(tokens[3]);
             }
 
             // CREATE TABLE <TABLE NAME> (<PROPERTIES>)
             else if (input.matches("create table .*")) {
-                response = service.createTable(input);
+                String[] tokens = input.split(" ");
+                // Expected value:
+                // ["create", "table", "<TABLE NAME>", "(col_1", "type_1(size)", ...]
+                // CORRECT THIS
+                response = service.createTable(tokens[2], tokens);
             }
 
 
             // INSERT INTO <TABLE NAME> VALUES (<VALUES>)
             else if (input.matches("insert into .*")) {
-                response = service.insert(input);
+                String[] tokens = input.split(" ");
+                // Expected value: ["insert", "into", "<TABLE NAME>", "values",
+                // "(value_1,", "value_2," ... "value_n)"]
+                // CORRECT THIS
+                response = service.insert(tokens[2], tokens);
             }
 
             // DROP TABLE
+            // Does this have to be implemented?
             else if (input.matches("drop table")) {
                 response = service.dropTable(input);
             }

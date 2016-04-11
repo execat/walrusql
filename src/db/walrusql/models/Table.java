@@ -29,8 +29,7 @@ public class Table {
     /*
         SELECT * FROM <TABLE> (No conditions)
      */
-    public boolean select(String tableName) {
-        table = tableName;
+    public boolean select() {
         if (sanity()) {
             // SELECT * FROM <TABLE>
             return true;
@@ -46,8 +45,7 @@ public class Table {
             column_name_n data_type(size) [primary_key|not null],
         );
      */
-    public boolean create(String tableName, String[] datatypes) {
-        table = tableName;
+    public boolean create(String[] datatypes) {
         if (schemaExists()) {
             // Create table
             return true;
@@ -58,8 +56,7 @@ public class Table {
     /*
         INSERT INTO TABLE <TABLE> VALUES (value_1, value_2, ..., value_n);
      */
-    public boolean insert(String tableName, String[] values) {
-        table = tableName;
+    public boolean insert(String[] values) {
         if (sanity()) {
             // Try inserting
             return true;
@@ -70,8 +67,7 @@ public class Table {
     /*
         DO YOU HAVE TO SUPPORT DROP OR NOT?
      */
-    public boolean drop(String tableName) {
-        table = tableName;
+    public boolean drop() {
         if (sanity()) {
             // Try dropping
             return true;
@@ -79,6 +75,9 @@ public class Table {
         return false;
     }
 
+    /*
+        Existance checkers
+     */
     private boolean sanity() {
         return schemaExists() && tableExists();
     }
@@ -100,7 +99,16 @@ public class Table {
         return true;
     }
 
-    public void setSchema(String schema) {
+    /*
+        Setters
+     */
+    public boolean setSchema(String schema) {
         this.schema = schema;
+        return true;
+    }
+
+    public boolean setTable(String table) {
+        this.table = table;
+        return true;
     }
 }

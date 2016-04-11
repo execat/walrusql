@@ -20,8 +20,7 @@ public class Schema {
     /*
         USE SCHEMA <SCHEMA NAME>;
      */
-    public boolean use(String schemaName) {
-        schema = schemaName;
+    public boolean use() {
         if (schemaExists()) {
             System.out.println("Using " + schema);
             return true;
@@ -36,8 +35,7 @@ public class Schema {
     /*
         CREATE SCHEMA <SCHEMA NAME>;
      */
-    public boolean create(String schemaName) {
-        schema = schemaName;
+    public boolean create() {
         // Create only if schema does NOT exist
         // || condition for now
         if (!schemaExists() || true) {
@@ -64,5 +62,10 @@ public class Schema {
     }
     public String getCurrent() {
         return schema;
+    }
+
+    public boolean setSchema(String schema) {
+        this.schema = schema;
+        return true;
     }
 }

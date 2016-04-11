@@ -10,43 +10,62 @@ import db.walrusql.models.Table;
 public class DatabaseService {
     Schema schema;
     Table table;
-    String input;
 
-    public DatabaseService(String str) {
+    public DatabaseService() {
         schema = new Schema();
         table = new Table();
-        input = str;
     }
 
+    /*
+     *  SCHEMAS
+     */
+    // Show schemas
     public boolean showSchemas() {
         return schema.show();
     }
 
+    // Use schema
     public boolean useSchema(String name) {
-        return schema.use(name) && table.setSchema(name);
+        return schema.setSchema(name) &&
+                schema.use() &&
+                table.setSchema(name);
     }
 
-    public boolean createSchema() {
-        return schema.create();
+    // Create schema
+    public boolean createSchema(String schemaName) {
+        return schema.setSchema(schemaName) &&
+                schema.create();
     }
 
-    public boolean showTables(String tableName) {
-        return table.show(schema.getCurrent(), tableName);
+    /*
+     *  TABLES
+     */
+    // Show tables
+    public boolean showTables() {
+        return table.show();
     }
 
-    public boolean select() {
+    // Select * from table
+    public boolean select(String tableName) {
+        table.setTable(tableName);
         return table.select();
     }
 
-    public boolean createTable() {
-        return table.create();
+    // Create table
+    public boolean createTable(String tableName, String[] datatypes) {
+        table.setTable(tableName);
+        return table.create(datatypes);
     }
 
-    public boolean insert() {
-        return table.insert();
+    // Insert into table
+    public boolean insert(String tableName, String[] values) {
+        table.setTable(tableName);
+        return table.insert(values);
     }
 
-    public boolean dropTable() {
+    // Not sure if this is to be implemented
+    public boolean dropTable(String tableName) {
+        table.setTable(tableName);
         return table.drop();
     }
 }
