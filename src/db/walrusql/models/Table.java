@@ -162,11 +162,17 @@ public class Table {
                             result.add(list);
                         }
                     } catch (IndexOutOfBoundsException e) {
-
+                    }
+                }
+                if (operand.equals("!=")) {
+                    try {
+                        if (!compare.toString().equals(value.toString())) {
+                            result.add(list);
+                        }
+                    } catch (IndexOutOfBoundsException e) {
                     }
                 }
             } catch (IndexOutOfBoundsException e) {
-
             }
         }
 
