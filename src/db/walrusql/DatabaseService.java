@@ -47,26 +47,23 @@ public class DatabaseService {
 
     // Select * from table
     public boolean select(String tableName) {
-        table.setTable(tableName);
-        return table.select();
+        return table.setTable(tableName) && table.select();
     }
 
     public boolean select(String tableName, String columnName,
                           String operand, String value) {
-        table.setTable(tableName);
-        return table.select(columnName, operand, value);
+        return table.setTable(tableName) &&
+                table.select(columnName, operand, value);
     }
 
     // Create table
     public boolean createTable(String tableName, String[] datatypes) {
-        table.setTable(tableName);
-        return table.create(datatypes);
+        return table.setTable(tableName) && table.create(datatypes);
     }
 
     // Insert into table
     public boolean insert(String tableName, String[] values) {
-        table.setTable(tableName);
-        return table.insert(values);
+        return table.setTable(tableName) && table.insert(values);
     }
 
     // Not sure if this is to be implemented

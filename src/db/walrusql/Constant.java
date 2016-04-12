@@ -1,6 +1,7 @@
 package db.walrusql;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by atm on 4/11/16.
@@ -13,4 +14,9 @@ public class Constant {
             directory + "information_schema.tables.tbl";
     public static String columnsTableName =
             directory + "information_schema.columns.tbl";
+
+    private static String[] comparable = {"byte", "int", "short", "long", "float",
+            "double", "datetime", "date"};
+    public static ArrayList<String> comparableTypes =
+            new ArrayList(Arrays.asList(comparable));
 }

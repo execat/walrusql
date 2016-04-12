@@ -1,5 +1,7 @@
 package db.walrusql.models;
 
+import com.sun.tools.internal.jxc.ap.Const;
+import com.sun.tools.jdi.DoubleTypeImpl;
 import db.walrusql.Constant;
 import db.walrusql.DataHandler;
 
@@ -44,11 +46,9 @@ public class Table {
     /*
         SELECT * FROM <TABLE> (No conditions)
      */
-    public boolean select() {
+    public ArrayList<ArrayList> silentSelect() {
         DataHandler dataHandler = null;
         if (sanity()) {
-            ArrayList<ArrayList> columns = tableStructure();
-            ArrayList columnNames = tableColumnNames();
             ArrayList types = tableColumnTypes();
             String directory = Constant.directory;
             String filename = directory + schema.toLowerCase() + "." +
@@ -56,26 +56,121 @@ public class Table {
             dataHandler = new DataHandler(filename, "r");
             ArrayList<ArrayList> result = dataHandler.readRecords(types);
 
-            System.out.println(columnNames);
-            for(Object o: result) {
-                System.out.println(o);
-            }
 
             // TODO: Fetch data depending on `types` array
             // System.out.println(columns);
             // System.out.println(types);
 
-            return true;
+            return result;
         }
-        return false;
+        return null;
+    }
+
+    public boolean select() {
+        ArrayList<ArrayList> data = silentSelect();
+
+        System.out.println(tableColumnNames());
+        for(Object o: data) {
+            System.out.println(o);
+        }
+
+        return true;
     }
 
     /*
         SELECT * FROM <TABLE> (No conditions)
      */
     public boolean select(String columnName, String operand, String value) {
-        return false;
+        ArrayList<ArrayList> data = silentSelect();
+        ArrayList<ArrayList> result = filter(data, columnName, operand, value);
 
+        System.out.println(tableColumnNames());
+
+        if (result == null) {
+            System.out.println("No data");
+            return false;
+        }
+
+        for(Object o: result) {
+            System.out.println(o);
+        }
+
+        return true;
+    }
+
+    private ArrayList<ArrayList> filter(ArrayList<ArrayList> data, String columnName,
+                                        String operand, String value) {
+        ArrayList<String> columnNames = tableColumnNames();
+        ArrayList<String> columnTypes = tableColumnTypes();
+        ArrayList<ArrayList> result = new ArrayList();
+
+        int index = columnNames.indexOf(columnName);
+        // If column name does not exist
+        if(index < 0) {
+            System.out.println("No column named " + columnName);
+            return null;
+        }
+
+        String columnType = columnTypes.get(index);
+
+        if(value.contains("'")) {
+            value = value.substring(1, value.length() - 1);
+        }
+
+        for(ArrayList list: data) {
+            try {
+                Comparable compare = (Comparable) list.get(index);
+                // < and > only for comparable types
+                if (Constant.comparableTypes.contains(columnType)) {
+                    Object d = null;
+                    switch (columnType) {
+                        case "int":
+                            d = Integer.parseInt(value);
+                            break;
+                        case "byte":
+                            d = Byte.parseByte(value);
+                            break;
+                        case "short":
+                            d = Short.parseShort(value);
+                            break;
+                        case "float":
+                            d = Float.parseFloat(value);
+                            break;
+                        case "double":
+                            d = Double.parseDouble(value);
+                            break;
+                        case "date":
+                        case "datetime":
+                        case "long":
+                            d = Long.parseLong(value);
+                            break;
+                    }
+
+                    if (operand.equals(">")) {
+                        if (compare.compareTo(d) > 0) {
+                            result.add(list);
+                        }
+                    } else if (operand.equals("<")) {
+                        if (compare.compareTo(d) < 0) {
+                            result.add(list);
+                        }
+                    }
+                }
+                if (operand.equals("=")) {
+                    try {
+                        if (compare.toString().equals(value.toString())) {
+                            result.add(list);
+                        }
+                    } catch (IndexOutOfBoundsException e) {
+
+                    }
+                }
+            } catch (IndexOutOfBoundsException e) {
+
+            }
+        }
+
+        return result;
     }
 
     /*
@@ -223,7 +318,12 @@ public class Table {
     }
 
     public boolean setTable(String table) {
-        this.table = table;
-        return true;
+        if(schema != null) {
+            this.table = table;
+            return true;
+        } else {
+            System.out.println("FAIL: No database selected");
+            return false;
+        }
     }
 }
