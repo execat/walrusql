@@ -3,6 +3,7 @@ package db.walrusql.models;
 import db.walrusql.Constant;
 import db.walrusql.DataHandler;
 
+import javax.xml.crypto.Data;
 import java.io.File;
 import java.io.RandomAccessFile;
 import java.lang.reflect.Array;
@@ -44,14 +45,25 @@ public class Table {
         SELECT * FROM <TABLE> (No conditions)
      */
     public boolean select() {
+        DataHandler dataHandler = null;
         if (sanity()) {
             ArrayList<ArrayList> columns = tableStructure();
+            ArrayList columnNames = tableColumnNames();
             ArrayList types = tableColumnTypes();
+            String directory = Constant.directory;
+            String filename = directory + schema.toLowerCase() + "." +
+                    table.toLowerCase() + ".tbl";
+            dataHandler = new DataHandler(filename, "r");
+            ArrayList<ArrayList> result = dataHandler.readRecords(types);
 
+            System.out.println(columnNames);
+            for(Object o: result) {
+                System.out.println(o);
+            }
 
             // TODO: Fetch data depending on `types` array
-            System.out.println(columns);
-            System.out.println(types);
+            // System.out.println(columns);
+            // System.out.println(types);
 
             return true;
         }
@@ -167,7 +179,6 @@ public class Table {
         // Stores the column structure of the table
         ArrayList<ArrayList> columns = new ArrayList();
         for (ArrayList c: columnsTable) {
-            System.out.println(c);
             if(c.get(1).toString().toLowerCase().equals(table)) {
                 columns.add(c);
             }
@@ -180,9 +191,27 @@ public class Table {
         ArrayList types = new ArrayList();
 
         for(ArrayList c: columns) {
-            types.add((String)c.get(4));
+            String type = (String)c.get(4);
+            int start = type.indexOf('(');
+            int end = type.indexOf(')');
+            if (start > 0 && end > 0) {
+                // Strip brackets
+                type = type.substring(0, start) + type.substring(end + 1, type.length());
+            }
+            types.add(type);
         }
         return types;
+    }
+
+    private ArrayList tableColumnNames() {
+        ArrayList<ArrayList> columns = tableStructure();
+        ArrayList names = new ArrayList();
+
+        for (ArrayList c : columns) {
+            String name = c.get(2).toString();
+            names.add(name);
+        }
+        return names;
     }
 
     /*
