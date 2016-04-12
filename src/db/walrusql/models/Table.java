@@ -107,12 +107,9 @@ public class Table {
             dataHandler = new DataHandler(filename, "rw");
             dataHandler.end();
 
+            ArrayList<String> types =  tableColumnTypes();
 
-            System.out.println("------------" + tableStructure());
-
-
-
-            return true;
+            return dataHandler.writeRecords(values, types);
         }
         return false;
     }

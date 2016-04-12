@@ -41,6 +41,24 @@ public class DataHandler {
         return true;
     }
 
+    public boolean writeNumber(String i, String type) {
+        int number = Integer.parseInt(i);
+
+        try {
+            switch(type) {
+                case "byte":    file.write(number); break;
+                case "short":   file.writeShort(number); break;
+                case "int":     file.writeInt(number); break;
+                case "long":    file.writeLong(number); break;
+                case "char":    file.writeChar(number); break;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
     public boolean writeInt(int i) {
         try {
             file.writeInt(i);
@@ -188,5 +206,44 @@ public class DataHandler {
             position++;
         }
         return true;
+    }
+
+    public boolean writeOther(String i, String type) {
+        // Date and datetime are not implemented
+        try {
+            if (type.matches("char") && !type.matches("varchar")) {
+                file.writeChar(Integer.parseInt(i));
+            } else if (type.matches("varchar")) {
+                writeVarchar(i);
+            } else if (type == "float") {
+                float f = Float.parseFloat(i);
+                file.writeFloat(f);
+            } else if (type == "double") {
+                double d = Double.parseDouble(i);
+                file.writeDouble(d);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    public boolean writeRecords(String[] values, ArrayList<String> types) {
+        int i = 0;
+        for (String type: types) {
+            switch(type) {
+                case "byte":
+                case "short":
+                case "int":
+                case "long":
+                case "char":
+                    writeNumber(values[i], type);
+                    break;
+                default: writeOther(values[i], type);
+            }
+
+            i++;
+        }
+        return false;
     }
 }
