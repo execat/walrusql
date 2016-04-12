@@ -3,6 +3,8 @@ package db.walrusql.models;
 import db.walrusql.Constant;
 import db.walrusql.DataHandler;
 
+import java.io.File;
+import java.io.RandomAccessFile;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
@@ -43,17 +45,9 @@ public class Table {
      */
     public boolean select() {
         if (sanity()) {
-            DataHandler handler = new DataHandler(Constant.columnsTableName, "r");
-            ArrayList<ArrayList> columnsTable = handler.fetchColumns();
-            // Stores the column structure of the table
-            ArrayList<ArrayList> columns = new ArrayList();
-            ArrayList<String> types = new ArrayList();
-            for (ArrayList c: columnsTable) {
-                if(c.get(1).toString().toLowerCase().equals(table)) {
-                    columns.add(c);
-                    types.add((String)c.get(4));
-                }
-            }
+            ArrayList<ArrayList> columns = tableStructure();
+            ArrayList types = tableColumnTypes();
+
 
             // TODO: Fetch data depending on `types` array
             System.out.println(columns);
@@ -104,8 +98,20 @@ public class Table {
         INSERT INTO TABLE <TABLE> VALUES (value_1, value_2, ..., value_n);
      */
     public boolean insert(String[] values) {
+        DataHandler dataHandler = null;
         if (sanity()) {
-            // Try inserting
+            String directory = Constant.directory;
+            String filename = directory + schema.toLowerCase() + "." +
+                    table.toLowerCase() + ".tbl";
+
+            dataHandler = new DataHandler(filename, "rw");
+            dataHandler.end();
+
+
+            System.out.println("------------" + tableStructure());
+
+
+
             return true;
         }
         return false;
@@ -156,6 +162,30 @@ public class Table {
             return false;
         }
         return true;
+    }
+
+    private ArrayList tableStructure() {
+        DataHandler handler = new DataHandler(Constant.columnsTableName, "r");
+        ArrayList<ArrayList> columnsTable = handler.fetchColumns();
+        // Stores the column structure of the table
+        ArrayList<ArrayList> columns = new ArrayList();
+        for (ArrayList c: columnsTable) {
+            System.out.println(c);
+            if(c.get(1).toString().toLowerCase().equals(table)) {
+                columns.add(c);
+            }
+        }
+        return columns;
+    }
+
+    private ArrayList tableColumnTypes() {
+        ArrayList<ArrayList> columns = tableStructure();
+        ArrayList types = new ArrayList();
+
+        for(ArrayList c: columns) {
+            types.add((String)c.get(4));
+        }
+        return types;
     }
 
     /*

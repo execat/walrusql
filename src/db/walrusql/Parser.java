@@ -118,8 +118,11 @@ public class Parser {
                 String[] tokens = input.split(" ");
                 // Expected value: ["insert", "into", "<TABLE NAME>", "values",
                 // "(value_1,", "value_2," ... "value_n)"]
-                // CORRECT THIS
-                response = service.insert(tokens[2], tokens);
+                int start = input.indexOf('(') + 1;
+                int end = input.length() - 1;
+                String params = input.substring(start, end)
+                        .replaceAll(", ", ",");
+                response = service.insert(tokens[2], params.split(","));
             }
 
             // DROP TABLE
