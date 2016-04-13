@@ -29,7 +29,9 @@ public class DataHandler {
     public boolean writeVarchar(String input) {
         try {
             // Remove quotes
-            input = input.substring(1, input.length() - 1);
+            if(input.contains("'")) {
+                input = input.substring(1, input.length() - 1);
+            }
             // Insert
             file.writeByte(input.length());
             file.writeBytes(input);
@@ -173,7 +175,7 @@ public class DataHandler {
             // Nullable?
             boolean nullWritten = false;
             for (int i = 2; i < tokens.length; i++) {
-                if ((tokens[i] == "nnull" || tokens[i] == "pri") && !nullWritten) {
+                if ((tokens[i].equals("nnull") || tokens[i].equals("pri")) && !nullWritten) {
                     writeVarchar("NO");
                     nullWritten = true;
                 }
@@ -185,7 +187,7 @@ public class DataHandler {
             // PK?
             boolean pkWritten = false;
             for (int i = 2; i < tokens.length; i++) {
-                if (tokens[i] == "pri" && !pkWritten) {
+                if (tokens[i].equals("pri") && !pkWritten) {
                     writeVarchar("PRI");
                     pkWritten = true;
                 }

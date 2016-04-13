@@ -55,12 +55,6 @@ public class Table {
                     table.toLowerCase() + ".tbl";
             dataHandler = new DataHandler(filename, "r");
             ArrayList<ArrayList> result = dataHandler.readRecords(types);
-
-
-            // TODO: Fetch data depending on `types` array
-            // System.out.println(columns);
-            // System.out.println(types);
-
             return result;
         }
         return null;
@@ -70,6 +64,12 @@ public class Table {
         ArrayList<ArrayList> data = silentSelect();
 
         System.out.println(tableColumnNames());
+
+        if (data == null) {
+            System.out.println("FAIL: No data");
+            return false;
+        }
+
         for(Object o: data) {
             System.out.println(o);
         }
@@ -197,12 +197,8 @@ public class Table {
             DataHandler tableHandler = new DataHandler(Constant.tablesTableName, "rw");
             DataHandler columnHandler = new DataHandler(Constant.columnsTableName, "rw");
 
-            System.out.println(schema);
-            System.out.println(table);
-            tableHandler.insertIntoTables(schema, table, cols.length);
-            columnHandler.insertIntoColumns(schema, table, cols);
-
-            return true;
+            return tableHandler.insertIntoTables(schema, table, cols.length) &&
+                    columnHandler.insertIntoColumns(schema, table, cols);
         }
         return false;
     }
@@ -220,11 +216,47 @@ public class Table {
             dataHandler = new DataHandler(filename, "rw");
             dataHandler.end();
 
+            if (primaryKeyExists(values)) {
+                System.out.println("FAIL: Primary key exists");
+                return false;
+            }
+
             ArrayList<String> types =  tableColumnTypes();
 
             return dataHandler.writeRecords(values, types);
         }
         return false;
+    }
+
+    private boolean primaryKeyExists(String[] values) {
+        ArrayList<ArrayList> data = silentSelect();
+        ArrayList<String> columnNames = tableColumnNames();
+        ArrayList<String> primaryColumns = fetchPrimaryColumns();
+
+        for(String primaryString: primaryColumns) {
+            int index = columnNames.indexOf(primaryString);
+            for(ArrayList row: data) {
+                String dataFromRow = row.get(index).toString();
+                String inputData = values[index];
+                System.out.println("-->" + dataFromRow + " " + inputData);
+                if (dataFromRow.equals(inputData)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private ArrayList<String> fetchPrimaryColumns() {
+        ArrayList<ArrayList> columns = tableStructure();
+        ArrayList<String> primaryColumns = new ArrayList<>();
+        for(ArrayList list: columns) {
+            if(list.get(6).equals("PRI")) {
+                primaryColumns.add(list.get(2).toString());
+            }
+        }
+        return primaryColumns;
     }
 
     /*
