@@ -2,14 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c008eb24-1f6b-44e9-b969-a0b113be95b4" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/data/information_schema.columns.tbl" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/data/information_schema.schemata.tbl" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/data/information_schema.tables.tbl" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/data/zoo.zoo.tbl" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/db/walrusql/DataHandler.java" afterPath="$PROJECT_DIR$/src/db/walrusql/DataHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/db/walrusql/models/Table.java" afterPath="$PROJECT_DIR$/src/db/walrusql/models/Table.java" />
     </list>
     <ignored path="walrusql.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -119,8 +112,8 @@
       <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="206">
-              <caret line="34" column="40" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="40" />
+            <state relative-caret-position="30">
+              <caret line="2" column="57" selection-start-line="2" selection-start-column="57" selection-end-line="2" selection-end-column="57" />
               <folding />
             </state>
           </provider>
@@ -156,9 +149,9 @@
         <option value="$PROJECT_DIR$/src/db/walrusql/models/InformationSchema.java" />
         <option value="$PROJECT_DIR$/src/db/walrusql/DatabaseService.java" />
         <option value="$PROJECT_DIR$/src/db/walrusql/Constant.java" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/src/db/walrusql/models/Table.java" />
         <option value="$PROJECT_DIR$/src/db/walrusql/DataHandler.java" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -740,16 +733,16 @@
       <updated>1460329188619</updated>
       <workItem from="1460329190273" duration="11929000" />
       <workItem from="1460341420636" duration="885000" />
-      <workItem from="1460348113978" duration="64377000" />
+      <workItem from="1460348113978" duration="64457000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="77191000" />
+    <option name="totallyTimeSpent" value="77271000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="724" y="23" width="955" height="1023" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -759,7 +752,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32975295" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32975295" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32975295" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32975295" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1071,8 +1064,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="206">
-          <caret line="34" column="40" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="40" />
+        <state relative-caret-position="30">
+          <caret line="2" column="57" selection-start-line="2" selection-start-column="57" selection-end-line="2" selection-end-column="57" />
           <folding />
         </state>
       </provider>

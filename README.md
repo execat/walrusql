@@ -1,5 +1,7 @@
 # walrusql
 
+Source can be found on https://github.com/execat/walrusql.
+
 Supported commands:
 
 1. `use information_schema;`
