@@ -45,7 +45,6 @@ public class Parser {
                     .replace(" +", " ")
                     .replace(";", "").toLowerCase();
             boolean response = false;
-            System.out.println("INPUT IS: " + input);
 
             /*
                 Schema commands
