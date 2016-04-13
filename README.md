@@ -34,7 +34,7 @@ insert into zoo values (12, 'elephant', 5);
 insert into zoo values (23, 'lion', 4);
 insert into zoo values (17, 'hippo', 5);
 `
-Inserts values.
+Inserts values into the table and creates index.
 
 7. `select * from zoo;`
 

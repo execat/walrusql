@@ -54,7 +54,7 @@ public class Table {
             String filename = directory + schema.toLowerCase() + "." +
                     table.toLowerCase() + ".tbl";
             dataHandler = new DataHandler(filename, "r");
-            ArrayList<ArrayList> result = dataHandler.readRecords(types);
+            ArrayList<ArrayList> result = dataHandler.readRecords(types, false);
             return result;
         }
         return null;
@@ -222,10 +222,31 @@ public class Table {
             }
 
             ArrayList<String> types =  tableColumnTypes();
-
-            return dataHandler.writeRecords(values, types);
+            return dataHandler.writeRecords(values, types) && writeIndexes();
         }
         return false;
+    }
+
+    private boolean writeIndexes() {
+        ArrayList<String> columns = tableColumnNames();
+        int i = 0;
+        for(String indexFile: tableColumnNames()) {
+            String directory = Constant.directory;
+            String filename = directory + schema.toLowerCase() + "." +
+                    table.toLowerCase() + "." + indexFile + ".ndx";
+            String dataFilename = directory + schema.toLowerCase() + "." +
+                    table.toLowerCase() + ".tbl";
+            ArrayList<String> column = tableColumnNames();
+            // Delete existing index
+            (new File(filename)).delete();
+            // Create new index
+            DataHandler dataHandler = new DataHandler(filename, "rw");
+            DataHandler data = new DataHandler(dataFilename, "rw");
+            ArrayList<String> types = tableColumnTypes();
+            dataHandler.createIndex(i, types, data);
+            i++;
+        }
+        return true;
     }
 
     private boolean primaryKeyExists(String[] values) {
@@ -236,11 +257,12 @@ public class Table {
         for(String primaryString: primaryColumns) {
             int index = columnNames.indexOf(primaryString);
             for(ArrayList row: data) {
-                String dataFromRow = row.get(index).toString();
-                String inputData = values[index];
-                System.out.println("-->" + dataFromRow + " " + inputData);
-                if (dataFromRow.equals(inputData)) {
-                    return true;
+                if(row.size() > index) {
+                    String dataFromRow = row.get(index).toString();
+                    String inputData = values[index];
+                    if (dataFromRow.equals(inputData)) {
+                        return true;
+                    }
                 }
             }
         }
@@ -336,7 +358,7 @@ public class Table {
         return types;
     }
 
-    private ArrayList tableColumnNames() {
+    private ArrayList<String> tableColumnNames() {
         ArrayList<ArrayList> columns = tableStructure();
         ArrayList names = new ArrayList();
 
